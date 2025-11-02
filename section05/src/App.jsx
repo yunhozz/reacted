@@ -5,6 +5,7 @@ import Main from "./components/Main.jsx";
 import Button from "./components/Button.jsx";
 import Counter from "./components/Counter.jsx";
 import Bulb from "./components/Bulb.jsx";
+import Register from "./components/Register.jsx";
 
 /*
 [re-rendering이 발생하는 조건]
@@ -35,6 +36,7 @@ function App() {
             </Button>
             <Counter/>
             <Bulb/>
+            <Register/>
             <Footer/>
         </>
     );
