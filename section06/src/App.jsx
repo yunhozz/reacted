@@ -1,7 +1,8 @@
 import "./App.css";
 import Viewer from "./components/Viewer.jsx";
 import Controller from "./components/Controller.jsx";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import Even from "./components/Even.jsx";
 
 export default function App() {
     // Viewer 컴포넌트에 전달할 State
@@ -12,11 +13,47 @@ export default function App() {
         setCount(count + value);
     };
 
+    const [input, setInput] = useState("");
+    const isMount = useRef(false);
+
+    // 의존성 함수(dependency array, deps)가 변경될 때마다 콜백 함수가 계속 실행됨
+    useEffect(() => {
+        console.log(`count: ${count}, input: ${input}`);
+    }, [count, input]);
+
+
+    // React 컴포넌트의 3가지 사이클
+
+    // 1. 마운트 -> 탄생
+    useEffect(() => {
+        console.log("mount");
+    }, []);
+
+    // 2. 업데이트 -> 변화, 리렌더링
+    useEffect(() => {
+        // 최초 렌더링 시 isMount 값을 true로 변경하고 아무 일도 발생하지 않음
+        // 이후 업데이트가 발생할 때마다 콘솔에 update 출력
+        if (!isMount.current) {
+            isMount.current = true;
+            return;
+        }
+        console.log("update");
+        // deps를 선언하지 않음
+    });
+
+    // 3. 언마운트 -> 죽음
+
     return (
         <div className="App">
             <h1>Simple Counter</h1>
             <section>
+                <input value={input} onChange={(e) => {
+                    setInput(e.target.value);
+                }}/>
+            </section>
+            <section>
                 <Viewer count={count}/>
+                {count % 2 === 0 ? <Even/> : null}
             </section>
             <section>
                 <Controller onClickButton={onClickButton}/>
