@@ -27,6 +27,7 @@ export default function App() {
     // 1. 마운트 -> 탄생
     useEffect(() => {
         console.log("mount");
+        // deps가 비어있으면 마운트 시 한 번만 실행!
     }, []);
 
     // 2. 업데이트 -> 변화, 리렌더링
