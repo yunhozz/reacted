@@ -2,7 +2,7 @@ import "./List.css";
 import TodoItem from "./TodoItem.jsx";
 import { useState } from "react";
 
-export default ({ todos }) => {
+export default ({ todos, onUpdateTodo }) => {
     const [keyword, setKeyword] = useState("");
 
     const onChangeKeyword = (e) => {
@@ -28,7 +28,7 @@ export default ({ todos }) => {
             <div className={"todos_wrapper"}>
                 {
                     filteredTodos.map(todo => {
-                        return <TodoItem key={todo.id} {...todo} />;
+                        return <TodoItem key={todo.id} {...todo} onUpdateTodo={onUpdateTodo}/>;
                     })
                 }
             </div>
