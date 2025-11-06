@@ -1,15 +1,13 @@
-import "./List.css";
+import "./TodoList.css";
 import TodoItem from "./TodoItem.jsx";
 import { useState } from "react";
 
 export default ({ todos, onUpdateTodo, onDeleteTodo }) => {
     const [keyword, setKeyword] = useState("");
 
-    const onChangeKeyword = (e) => {
-        setKeyword(e.target.value);
-    };
+    const onChangeKeyword = (e) => setKeyword(e.target.value);
 
-    const getFilteredData = () => {
+    const findTodosByKeyword = () => {
         if (keyword === "") {
             return todos;
         }
@@ -19,19 +17,17 @@ export default ({ todos, onUpdateTodo, onDeleteTodo }) => {
         );
     };
 
-    const filteredTodos = getFilteredData();
-
     return (
-        <div className={"List"}>
+        <div className={"TodoList"}>
             <h4>Todo List 🌱</h4>
             <input value={keyword} onChange={onChangeKeyword} placeholder={"검색어를 입력하세요"}/>
             <div className={"todos_wrapper"}>
                 {
-                    filteredTodos.map(todo => {
+                    findTodosByKeyword().map(todo => {
                         return (
                             <TodoItem
-                                key={todo.id}
                                 {...todo}
+                                key={todo.id}
                                 onUpdateTodo={onUpdateTodo}
                                 onDeleteTodo={onDeleteTodo}
                             />

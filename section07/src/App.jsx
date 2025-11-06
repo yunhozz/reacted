@@ -1,7 +1,7 @@
 import "./App.css";
 import Header from "./components/Header.jsx";
 import Editor from "./components/Editor.jsx";
-import List from "./components/List.jsx";
+import TodoList from "./components/TodoList.jsx";
 import { useRef, useState } from "react";
 
 const mockData = [
@@ -29,15 +29,16 @@ function App() {
     const [todos, setTodos] = useState(mockData);
     const idRef = useRef(3);
 
-    const onCreate = (content) => {
-        const newTodo = {
-            id: idRef.current++,
-            isDone: false,
-            content,
-            date: new Date().getTime()
-        };
-
-        setTodos([newTodo, ...todos]);
+    const onCreateTodo = (content) => {
+        setTodos([
+            {
+                id: idRef.current++,
+                isDone: false,
+                content,
+                date: new Date().getTime()
+            },
+            ...todos
+        ]);
     };
 
     const onUpdateTodo = (targetId) => {
@@ -48,15 +49,13 @@ function App() {
         ));
     };
 
-    const onDeleteTodo = (targetId) => {
-        setTodos(todos.filter(todo => todo.id !== targetId));
-    };
+    const onDeleteTodo = (targetId) => setTodos(todos.filter(todo => todo.id !== targetId));
 
     return (
         <div className={"App"}>
             <Header/>
-            <Editor onCreate={onCreate}/>
-            <List todos={todos} onUpdateTodo={onUpdateTodo} onDeleteTodo={onDeleteTodo}/>
+            <Editor onCreateTodo={onCreateTodo}/>
+            <TodoList todos={todos} onUpdateTodo={onUpdateTodo} onDeleteTodo={onDeleteTodo}/>
         </div>
     );
 }
