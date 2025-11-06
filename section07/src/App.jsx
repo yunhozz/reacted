@@ -2,7 +2,7 @@ import "./App.css";
 import Header from "./components/Header.jsx";
 import Editor from "./components/Editor.jsx";
 import TodoList from "./components/TodoList.jsx";
-import { useRef, useState } from "react";
+import { useReducer, useRef, useState } from "react";
 
 const mockData = [
     {
@@ -25,31 +25,67 @@ const mockData = [
     }
 ];
 
-function App() {
-    const [todos, setTodos] = useState(mockData);
+function reducer(state, action) {
+    switch (action.type) {
+        case "CREATE":
+            return [action.data, ...state];
+        case "UPDATE":
+            return state.map((item) => item.id === action.targetId ? { ...item, isDone: !item.isDone } : item);
+        case "DELETE":
+            return state.filter((item) => item.id !== action.targetId);
+        default:
+            return state;
+    }
+}
+
+export default () => {
+    // const [todos, setTodos] = useState(mockData);
+    const [todos, dispatch] = useReducer(reducer, mockData);
     const idRef = useRef(3);
 
     const onCreateTodo = (content) => {
-        setTodos([
-            {
+        // setTodos([
+        //     {
+        //         id: idRef.current++,
+        //         isDone: false,
+        //         content,
+        //         date: new Date().getTime()
+        //     },
+        //     ...todos
+        // ]);
+
+        dispatch({
+            type: "CREATE",
+            data: {
                 id: idRef.current++,
                 isDone: false,
                 content,
                 date: new Date().getTime()
-            },
-            ...todos
-        ]);
+            }
+        });
     };
 
     const onUpdateTodo = (targetId) => {
-        setTodos(todos.map(todo =>
-            todo.id === targetId
-                ? { ...todo, isDone: !todo.isDone }
-                : todo
-        ));
+        // setTodos(todos.map(todo =>
+        //     todo.id === targetId
+        //         ? { ...todo, isDone: !todo.isDone }
+        //         : todo
+        // ));
+
+        dispatch({
+            type: "UPDATE",
+            targetId
+        });
     };
 
-    const onDeleteTodo = (targetId) => setTodos(todos.filter(todo => todo.id !== targetId));
+    const onDeleteTodo = (targetId) => {
+        // setTodos(todos.filter(todo => todo.id !== targetId));
+
+        dispatch({
+            type: "DELETE",
+            targetId
+        });
+    };
 
     return (
         <div className={"App"}>
@@ -59,5 +95,3 @@ function App() {
         </div>
     );
 }
-
-export default App;
