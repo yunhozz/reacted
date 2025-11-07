@@ -15,8 +15,10 @@ const TodoItem = ({ id, isDone, content, date, onUpdateTodo, onDeleteTodo }) => 
     );
 };
 
+export default memo(TodoItem);
+
 // 고차 컴포넌트(HOC)
-export default memo(TodoItem, (prevProps, nextProps) => {
+memo(TodoItem, (prevProps, nextProps) => {
     // 반환값에 따라 props의 변경 여부를 판단
     // true: props 변경되지 않음 -> 리렌더링 X
     // false: props 변경됨 -> 리렌더링 O

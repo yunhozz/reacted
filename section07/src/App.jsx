@@ -2,7 +2,7 @@ import "./App.css";
 import Header from "./components/Header.jsx";
 import Editor from "./components/Editor.jsx";
 import TodoList from "./components/TodoList.jsx";
-import { useReducer, useRef, useState } from "react";
+import { useCallback, useReducer, useRef } from "react";
 
 const mockData = [
     {
@@ -58,19 +58,20 @@ export default () => {
         });
     };
 
-    const onUpdateTodo = (targetId) => {
+    // useMemo()의 자매품
+    const onUpdateTodo = useCallback((targetId) => {
         dispatch({
             type: "UPDATE",
             targetId
         });
-    };
+    }, []);
 
-    const onDeleteTodo = (targetId) => {
+    const onDeleteTodo = useCallback((targetId) => {
         dispatch({
             type: "DELETE",
             targetId
         });
-    };
+    }, []);
 
     return (
         <div className={"App"}>
