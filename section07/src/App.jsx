@@ -58,7 +58,8 @@ export default () => {
         });
     };
 
-    // useMemo()의 자매품
+    // useMemo: 값 및 계산 결과를 메모이제이션
+    // useCallback: 전달된 함수 자체를 메모이제이션
     const onUpdateTodo = useCallback((targetId) => {
         dispatch({
             type: "UPDATE",
