@@ -1,8 +1,10 @@
 import "./TodoList.css";
 import TodoItem from "./TodoItem.jsx";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
+import { TodoStateContext } from "../App.jsx";
 
-export default ({ todos, onUpdateTodo, onDeleteTodo }) => {
+export default () => {
+    const todos = useContext(TodoStateContext);
     const [keyword, setKeyword] = useState("");
 
     const onChangeKeyword = (e) => setKeyword(e.target.value);
@@ -40,8 +42,6 @@ export default ({ todos, onUpdateTodo, onDeleteTodo }) => {
                             <TodoItem
                                 {...todo}
                                 key={todo.id}
-                                onUpdateTodo={onUpdateTodo}
-                                onDeleteTodo={onDeleteTodo}
                             />
                         );
                     })

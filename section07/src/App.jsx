@@ -2,7 +2,7 @@ import "./App.css";
 import Header from "./components/Header.jsx";
 import Editor from "./components/Editor.jsx";
 import TodoList from "./components/TodoList.jsx";
-import { useCallback, useReducer, useRef } from "react";
+import { createContext, useCallback, useMemo, useReducer, useRef } from "react";
 
 const mockData = [
     {
@@ -40,6 +40,9 @@ function reducer(state, action) {
     }
 }
 
+export const TodoStateContext = createContext();
+export const TodoDispatchContext = createContext();
+
 export default () => {
     // dispatch: 상태 변화를 요청하는 함수
     // 상태가 어떻게 변화되길 원하는지의 내용(=액션 객체)을 인수로 전달 -> dispatch(action)
@@ -74,11 +77,33 @@ export default () => {
         });
     }, []);
 
+    /*
+    createContext()로 신규 컨텍스트(TodoContext)를 만들고,
+    TodoContext.Provider로 Editor, List 컴포넌트의 부모로 설정한다.
+
+    결국, App 컴포넌트에서 value props들을 TodoContext.Provider로 전달하게 되고,
+    Editor, List 컴포넌트는 TodoContext의 데이터 공급 범위로 설정된다.
+
+    이때, todos와 같이 변경될 수 있는 값을 포함하여 컨텍스트를 구성할 경우
+    TodoContext.Provider 대상 컴포넌트의 메모이제이션이 제대로 동작하지 않는다.
+        -> 변경될 수 있는 값은 TodoStateContext, 변경되지 않는 값은 TodoDispatchContext 로 구성!!
+
+     */
+
+    // 함수들을 메모이제이션하여 컨텍스트에 변하지 않는 값을 넣기 위해
+    const memoizedDispatch = useMemo(() => {
+        return { onCreateTodo, onUpdateTodo, onDeleteTodo };
+    }, []);
+
     return (
         <div className={"App"}>
             <Header/>
-            <Editor onCreateTodo={onCreateTodo}/>
-            <TodoList todos={todos} onUpdateTodo={onUpdateTodo} onDeleteTodo={onDeleteTodo}/>
+            <TodoStateContext value={todos}>
+                <TodoDispatchContext value={memoizedDispatch}>
+                    <Editor/>
+                    <TodoList/>
+                </TodoDispatchContext>
+            </TodoStateContext>
         </div>
     );
 }
