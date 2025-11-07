@@ -25,6 +25,8 @@ const mockData = [
     }
 ];
 
+// reducer: 변환기
+// 액션 객체(action)를 받아서 상태를 변화시키는 역할을 함
 function reducer(state, action) {
     switch (action.type) {
         case "CREATE":
@@ -39,21 +41,12 @@ function reducer(state, action) {
 }
 
 export default () => {
-    // const [todos, setTodos] = useState(mockData);
+    // dispatch: 상태 변화를 요청하는 함수
+    // 상태가 어떻게 변화되길 원하는지의 내용(=액션 객체)을 인수로 전달 -> dispatch(action)
     const [todos, dispatch] = useReducer(reducer, mockData);
     const idRef = useRef(3);
 
     const onCreateTodo = (content) => {
-        // setTodos([
-        //     {
-        //         id: idRef.current++,
-        //         isDone: false,
-        //         content,
-        //         date: new Date().getTime()
-        //     },
-        //     ...todos
-        // ]);
-
         dispatch({
             type: "CREATE",
             data: {
@@ -66,12 +59,6 @@ export default () => {
     };
 
     const onUpdateTodo = (targetId) => {
-        // setTodos(todos.map(todo =>
-        //     todo.id === targetId
-        //         ? { ...todo, isDone: !todo.isDone }
-        //         : todo
-        // ));
-
         dispatch({
             type: "UPDATE",
             targetId
@@ -79,8 +66,6 @@ export default () => {
     };
 
     const onDeleteTodo = (targetId) => {
-        // setTodos(todos.filter(todo => todo.id !== targetId));
-
         dispatch({
             type: "DELETE",
             targetId
