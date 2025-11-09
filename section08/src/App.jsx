@@ -1,10 +1,11 @@
 import "./App.css";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import Button from "./components/Button.jsx";
+import Header from "./components/Header.jsx";
 import Diary from "./pages/Diary.jsx";
 import Home from "./pages/Home.jsx";
 import New from "./pages/New.jsx";
 import Notfound from "./pages/Notfound.jsx";
-import { getEmotionImage } from "./util/get-emotion-image.js";
 
 export default () => {
     const nav = useNavigate();
@@ -13,19 +14,14 @@ export default () => {
 
     return (
         <>
-            <div>
-                <img src={getEmotionImage(1)}/>
-                <img src={getEmotionImage(2)}/>
-                <img src={getEmotionImage(3)}/>
-                <img src={getEmotionImage(4)}/>
-                <img src={getEmotionImage(5)}/>
-            </div>
-            <div>
-                <Link to={"/"}>Home</Link>
-                <Link to={"/new"}>New</Link>
-                <Link to={"/diary"}>Diary</Link>
-            </div>
-            <button onClick={onClickButton}>New 페이지로 이동</button>
+            <Header
+                title={"Header"}
+                leftChild={<Button text={"Left"}/>}
+                rightChild={<Button text={"Right"}/>}
+            />
+            <Button text={"1"} onClick={onClickButton}/>
+            <Button type={"POSITIVE"} text={"2"} onClick={onClickButton}/>
+            <Button type={"NEGATIVE"} text={"3"} onClick={onClickButton}/>
             <Routes className={"App"}>
                 <Route path={"/"} element={<Home/>}></Route>
                 <Route path={"/new"} element={<New/>}></Route>
@@ -35,3 +31,10 @@ export default () => {
         </>
     );
 }
+
+/*
+[프로젝트 개발 순서]
+
+페이지 라우팅 -> 글로벌 레이아웃 설정 -> 공통 컴포넌트 구현 -> 개별 페이지 및 복잡한 기능 구현
+
+ */
