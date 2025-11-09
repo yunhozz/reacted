@@ -1,33 +1,109 @@
 import "./App.css";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import Button from "./components/Button.jsx";
-import Header from "./components/Header.jsx";
+import { createContext, useReducer, useRef } from "react";
+import { Route, Routes } from "react-router-dom";
 import Diary from "./pages/Diary.jsx";
+import Edit from "./pages/Edit.jsx";
 import Home from "./pages/Home.jsx";
 import New from "./pages/New.jsx";
 import Notfound from "./pages/Notfound.jsx";
 
-export default () => {
-    const nav = useNavigate();
+const mockData = [
+    {
+        id: 1,
+        createdDate: new Date().getTime(),
+        emotionId: 1,
+        content: "1번 일기"
+    },
+    {
+        id: 2,
+        createdDate: new Date().getTime(),
+        emotionId: 2,
+        content: "2번 일기"
+    }
+];
 
-    const onClickButton = () => nav("/new");
+const DispatchType = {
+    CREATE: "create",
+    UPDATE: "update",
+    DELETE: "delete"
+};
+
+function reducer(state, action) {
+    switch (DispatchType) {
+        case DispatchType.CREATE:
+            return [...state, action.data];
+        case DispatchType.UPDATE:
+            return state.map(item =>
+                String(item.id) === String(action.data.id)
+                    ? action.data
+                    : item
+            );
+        case DispatchType.DELETE:
+            return state.filter(item => String(item.id) !== String(action.targetId));
+        default:
+            return state;
+    }
+}
+
+const DiaryStateContext = createContext();
+const DiaryDispatchContext = createContext();
+
+export default () => {
+    const [diaries, dispatch] = useReducer(reducer, mockData);
+    const diaryIdRef = useRef(3);
+
+    const onCreateDiary = (createdDate, emotionId, content) => {
+        const newDiary = {
+            id: diaryIdRef.current++,
+            createdDate,
+            emotionId,
+            content
+        };
+        dispatch({
+            type: DispatchType.CREATE,
+            data: newDiary
+        });
+    };
+
+    const onUpdateDiary = (diaryId, createdDate, emotionId, content) => {
+        const updatedDiary = {
+            id: diaryId,
+            createdDate,
+            emotionId,
+            content
+        };
+        dispatch({
+            type: DispatchType.UPDATE,
+            data: updatedDiary
+        });
+    };
+
+    const onDeleteDiary = (diaryId) => {
+        dispatch({
+            type: DispatchType.DELETE,
+            targetId: diaryId
+        });
+    };
 
     return (
         <>
-            <Header
-                title={"Header"}
-                leftChild={<Button text={"Left"}/>}
-                rightChild={<Button text={"Right"}/>}
-            />
-            <Button text={"1"} onClick={onClickButton}/>
-            <Button type={"POSITIVE"} text={"2"} onClick={onClickButton}/>
-            <Button type={"NEGATIVE"} text={"3"} onClick={onClickButton}/>
-            <Routes className={"App"}>
-                <Route path={"/"} element={<Home/>}></Route>
-                <Route path={"/new"} element={<New/>}></Route>
-                <Route path={"/diary/:id"} element={<Diary/>}></Route>
-                <Route path={"*"} element={<Notfound/>}></Route>
-            </Routes>
+            <DiaryStateContext value={diaries}>
+                <DiaryDispatchContext value={
+                    {
+                        onCreateDiary,
+                        onUpdateDiary,
+                        onDeleteDiary
+                    }
+                }>
+                    <Routes className={"App"}>
+                        <Route path={"/"} element={<Home/>}></Route>
+                        <Route path={"/new"} element={<New/>}></Route>
+                        <Route path={"/diary/:id"} element={<Diary/>}></Route>
+                        <Route path={"/edit/:id"} element={<Edit/>}></Route>
+                        <Route path={"*"} element={<Notfound/>}></Route>
+                    </Routes>
+                </DiaryDispatchContext>
+            </DiaryStateContext>
         </>
     );
 }
