@@ -32,3 +32,5 @@
 ### 6. [카운터 앱](https://github.com/yunhozz/reacted/tree/master/section06)
 
 ### 7. [투두리스트](https://github.com/yunhozz/reacted/tree/master/section07)
+
+### 8. [감정 일기장](https://github.com/yunhozz/reacted/tree/master/section08)
