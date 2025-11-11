@@ -35,7 +35,7 @@ const DispatchType = {
 };
 
 function reducer(state, action) {
-    switch (DispatchType) {
+    switch (action.type) {
         case DispatchType.CREATE:
             return [...state, action.data];
         case DispatchType.UPDATE:

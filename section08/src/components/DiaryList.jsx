@@ -4,14 +4,11 @@ import { useNavigate } from "react-router-dom";
 import Button from "./Button.jsx";
 import DiaryItem from "./DiaryItem.jsx";
 
-const getSortedDiaries = (diaries, sortType) => {
-    return diaries.toSorted((a, b) => {
-        const ac = Number(a.createdDate);
-        const bc = Number(b.createdDate);
-
-        return sortType === "oldest" ? ac - bc : bc - ac;
-    });
-};
+const getSortedDiaries = (diaries, sortType) => diaries.toSorted((a, b) => {
+    const ac = Number(a.createdDate);
+    const bc = Number(b.createdDate);
+    return sortType === "oldest" ? ac - bc : bc - ac;
+});
 
 export default ({ diaries }) => {
     const [sortType, setSortType] = useState("latest");
