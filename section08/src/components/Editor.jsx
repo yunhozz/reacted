@@ -1,19 +1,9 @@
 import "./Editor.css";
 import { useEffect, useState } from "react";
 import { emotionList } from "../util/constants.js";
+import { getStringDate } from "../util/get-string-date.js";
 import Button from "./Button.jsx";
 import EmotionItem from "./EmotionItem.jsx";
-
-const getStringDate = (targetDate) => {
-    let year = targetDate.getFullYear();
-    let month = targetDate.getMonth() + 1;
-    let date = targetDate.getDate();
-
-    if (month < 10) month = `0${month}`;
-    if (date < 10) date = `0${date}`;
-
-    return `${year}-${month}-${date}`;
-};
 
 export default ({ currentDiary, onSubmit }) => {
     const [input, setInput] = useState({
