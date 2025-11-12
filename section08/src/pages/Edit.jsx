@@ -1,25 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { DiaryDispatchContext, DiaryStateContext } from "../App.jsx";
+import { DiaryDispatchContext } from "../App.jsx";
 import Button from "../components/Button.jsx";
 import Editor from "../components/Editor.jsx";
 import Header from "../components/Header.jsx";
+import useDiary from "../hooks/useDiary.jsx";
 
 export default () => {
     const { onUpdateDiary, onDeleteDiary } = useContext(DiaryDispatchContext);
-    const diaries = useContext(DiaryStateContext);
-    const [currentDiary, setCurrentDiary] = useState();
     const params = useParams();
     const nav = useNavigate();
-
-    useEffect(() => {
-        const found = diaries.find(diary => String(diary.id) === String(params.id));
-        if (!found) {
-            window.alert("존재하지 않는 일기입니다.");
-            nav("/", { replace: true });
-        }
-        setCurrentDiary(found);
-    }, [params.id]);
 
     const onClickLeftButton = () => nav(-1);
 
@@ -30,6 +20,8 @@ export default () => {
             nav("/", { replace: true });
         }
     };
+
+    const currentDiary = useDiary(params.id);
 
     const onSubmit = (input) => {
         const isConfirmed = window.confirm("일기를 정말 수정할까요?");
