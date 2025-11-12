@@ -1,5 +1,5 @@
 import "./Editor.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button.jsx";
 import EmotionItem from "./EmotionItem.jsx";
 
@@ -37,12 +37,21 @@ const getStringDate = (targetDate) => {
     return `${year}-${month}-${date}`;
 };
 
-export default ({ onSubmit }) => {
+export default ({ currentDiary, onSubmit }) => {
     const [input, setInput] = useState({
         createdDate: new Date(),
         emotionId: 3,
         content: ""
     });
+
+    useEffect(() => {
+        if (currentDiary) {
+            setInput({
+                ...currentDiary,
+                createdDate: new Date(Number(currentDiary.createdDate))
+            });
+        }
+    }, [currentDiary]);
 
     const onChangeInput = (e) => {
         const name = e.target.name;
