@@ -1,5 +1,5 @@
 import "./App.css";
-import { createContext, useReducer, useRef } from "react";
+import { createContext, useEffect, useReducer, useRef, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Diary from "./pages/Diary.jsx";
 import Edit from "./pages/Edit.jsx";
@@ -7,56 +7,75 @@ import Home from "./pages/Home.jsx";
 import New from "./pages/New.jsx";
 import Notfound from "./pages/Notfound.jsx";
 
-const mockData = [
-    {
-        id: 1,
-        createdDate: new Date("2025-11-10").getTime(),
-        emotionId: 1,
-        content: "1번 일기"
-    },
-    {
-        id: 2,
-        createdDate: new Date("2025-11-09").getTime(),
-        emotionId: 2,
-        content: "2번 일기"
-    },
-    {
-        id: 3,
-        createdDate: new Date("2025-10-25").getTime(),
-        emotionId: 3,
-        content: "3번 일기"
-    }
-];
-
 const DispatchType = {
+    INIT: "init",
     CREATE: "create",
     UPDATE: "update",
     DELETE: "delete"
 };
 
+const DIARIES_KEY = "diaries";
+
 function reducer(state, action) {
+    let nextState;
     switch (action.type) {
+        case DispatchType.INIT:
+            return action.data;
         case DispatchType.CREATE:
-            return [...state, action.data];
+            nextState = [...state, action.data];
+            break;
         case DispatchType.UPDATE:
-            return state.map(item =>
+            nextState = state.map(item =>
                 String(item.id) === String(action.data.id)
                     ? action.data
                     : item
             );
+            break;
         case DispatchType.DELETE:
-            return state.filter(item => String(item.id) !== String(action.targetId));
+            nextState = state.filter(item => String(item.id) !== String(action.targetId));
+            break;
         default:
             return state;
     }
+
+    localStorage.setItem(DIARIES_KEY, JSON.stringify(nextState));
+
+    return nextState;
 }
 
 export const DiaryStateContext = createContext();
 export const DiaryDispatchContext = createContext();
 
 export default () => {
-    const [diaries, dispatch] = useReducer(reducer, mockData);
-    const diaryIdRef = useRef(3);
+    const [isLoading, setIsLoading] = useState(true);
+    const [diaries, dispatch] = useReducer(reducer, []);
+    const diaryIdRef = useRef(0);
+
+    useEffect(() => {
+        const storedDiaries = localStorage.getItem(DIARIES_KEY);
+        if (!storedDiaries) return;
+
+        const parsedDiaries = JSON.parse(storedDiaries);
+
+        if (!Array.isArray(parsedDiaries)) {
+            setIsLoading(false);
+            return;
+        }
+
+        let maxId = 0;
+        parsedDiaries.forEach(diary => {
+            maxId = Math.max(Number(diary.id), maxId);
+        });
+
+        diaryIdRef.current = maxId + 1;
+
+        dispatch({
+            type: DispatchType.INIT,
+            data: parsedDiaries
+        });
+
+        setIsLoading(false);
+    }, []);
 
     const onCreateDiary = (createdDate, emotionId, content) => {
         const newDiary = {
@@ -90,6 +109,10 @@ export default () => {
             targetId: diaryId
         });
     };
+
+    if (isLoading) {
+        return <div>데이터 로딩중입니다...</div>;
+    }
 
     return (
         <>
