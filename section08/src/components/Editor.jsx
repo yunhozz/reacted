@@ -42,9 +42,7 @@ export default ({ currentDiary, onSubmit }) => {
         }
     });
 
-    const onClickSubmitButton = () => {
-        onSubmit(input);
-    };
+    const onClickSubmitButton = () => onSubmit(input);
 
     return (
         <div className={"Editor"}>

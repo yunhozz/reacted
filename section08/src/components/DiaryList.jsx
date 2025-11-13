@@ -16,7 +16,7 @@ export default ({ diaries }) => {
 
     const onChangeSortType = (e) => setSortType(e.target.value);
 
-    const onClickButton = () => nav("/new");
+    const onClickNewButton = () => nav("/new");
 
     return (
         <div className={"DiaryList"}>
@@ -25,7 +25,7 @@ export default ({ diaries }) => {
                     <option value={"latest"}>최신순</option>
                     <option value={"oldest"}>오래된 순</option>
                 </select>
-                <Button type={"POSITIVE"} text={"새 일기 쓰기"} onClick={onClickButton}/>
+                <Button type={"POSITIVE"} text={"새 일기 쓰기"} onClick={onClickNewButton}/>
             </div>
             <div className={"list_wrapper"}>
                 {

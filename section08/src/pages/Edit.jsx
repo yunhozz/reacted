@@ -23,7 +23,7 @@ export default () => {
 
     const currentDiary = useDiary(params.id);
 
-    const onSubmit = (input) => {
+    const onSubmitUpdatedDiary = (input) => {
         const isConfirmed = window.confirm("일기를 정말 수정할까요?");
         if (isConfirmed) {
             const { createdDate, emotionId, content } = input;
@@ -39,7 +39,7 @@ export default () => {
                 leftChild={<Button text={"< 뒤로 가기"} onClick={onClickLeftButton}/>}
                 rightChild={<Button type={"NEGATIVE"} text={"삭제하기"} onClick={onClickDeleteButton}/>}
             />
-            <Editor currentDiary={currentDiary} onSubmit={onSubmit}/>
+            <Editor currentDiary={currentDiary} onSubmit={onSubmitUpdatedDiary}/>
         </div>
     );
 }

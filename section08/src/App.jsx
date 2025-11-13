@@ -94,13 +94,7 @@ export default () => {
     return (
         <>
             <DiaryStateContext value={diaries}>
-                <DiaryDispatchContext value={
-                    {
-                        onCreateDiary,
-                        onUpdateDiary,
-                        onDeleteDiary
-                    }
-                }>
+                <DiaryDispatchContext value={{ onCreateDiary, onUpdateDiary, onDeleteDiary }}>
                     <Routes className={"App"}>
                         <Route path={"/"} element={<Home/>}></Route>
                         <Route path={"/new"} element={<New/>}></Route>

@@ -9,7 +9,7 @@ export default () => {
     const { onCreateDiary } = useContext(DiaryDispatchContext);
     const nav = useNavigate();
 
-    const onClickButton = () => nav(-1);
+    const onClickLeftButton = () => nav(-1);
 
     const onSubmitNewDiary = (input) => {
         const { createdDate, emotionId, content } = input;
@@ -21,7 +21,7 @@ export default () => {
         <div>
             <Header
                 title={"새 일기 쓰기"}
-                leftChild={<Button text={"< 뒤로 가기"} onClick={onClickButton}/>}
+                leftChild={<Button text={"< 뒤로 가기"} onClick={onClickLeftButton}/>}
             />
             <Editor onSubmit={onSubmitNewDiary}/>
         </div>
