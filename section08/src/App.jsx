@@ -53,7 +53,10 @@ export default () => {
 
     useEffect(() => {
         const storedDiaries = localStorage.getItem(DIARIES_KEY);
-        if (!storedDiaries) return;
+        if (!storedDiaries) {
+            setIsLoading(false);
+            return;
+        }
 
         const parsedDiaries = JSON.parse(storedDiaries);
 
