@@ -3,6 +3,7 @@ import { DiaryStateContext } from "../App.jsx";
 import Button from "../components/Button.jsx";
 import DiaryList from "../components/DiaryList.jsx";
 import Header from "../components/Header.jsx";
+import usePageTitle from "../hooks/usePageTitle.jsx";
 
 const getMonthlyDiaries = (pivotDate, diaries) => {
     const beginTime = new Date(
@@ -26,6 +27,7 @@ const getMonthlyDiaries = (pivotDate, diaries) => {
 export default () => {
     const diaries = useContext(DiaryStateContext);
     const [pivotDate, setPivotDate] = useState(new Date());
+    usePageTitle("감정 일기장");
 
     const monthlyDiaries = getMonthlyDiaries(pivotDate, diaries);
 

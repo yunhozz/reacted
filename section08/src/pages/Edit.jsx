@@ -5,11 +5,13 @@ import Button from "../components/Button.jsx";
 import Editor from "../components/Editor.jsx";
 import Header from "../components/Header.jsx";
 import useDiary from "../hooks/useDiary.jsx";
+import usePageTitle from "../hooks/usePageTitle.jsx";
 
 export default () => {
     const { onUpdateDiary, onDeleteDiary } = useContext(DiaryDispatchContext);
     const params = useParams();
     const nav = useNavigate();
+    usePageTitle(`${params.id}번 일기 수정`);
 
     const onClickLeftButton = () => nav(-1);
 

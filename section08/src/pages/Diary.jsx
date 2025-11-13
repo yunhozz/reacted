@@ -3,11 +3,13 @@ import Button from "../components/Button.jsx";
 import Header from "../components/Header.jsx";
 import Viewer from "../components/Viewer.jsx";
 import useDiary from "../hooks/useDiary.jsx";
+import usePageTitle from "../hooks/usePageTitle.jsx";
 import { getStringDate } from "../util/get-string-date.js";
 
 export default () => {
     const params = useParams();
     const nav = useNavigate();
+    usePageTitle(`${params.id}번 일기`);
 
     const onClickLeftButton = () => nav(-1);
     const onClickEditButton = () => nav(`/edit/${params.id}`);

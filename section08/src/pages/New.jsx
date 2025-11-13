@@ -4,10 +4,12 @@ import { DiaryDispatchContext } from "../App.jsx";
 import Button from "../components/Button.jsx";
 import Editor from "../components/Editor.jsx";
 import Header from "../components/Header.jsx";
+import usePageTitle from "../hooks/usePageTitle.jsx";
 
 export default () => {
     const { onCreateDiary } = useContext(DiaryDispatchContext);
     const nav = useNavigate();
+    usePageTitle("새 일기 쓰기");
 
     const onClickLeftButton = () => nav(-1);
 
