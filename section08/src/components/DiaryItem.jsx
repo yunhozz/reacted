@@ -1,6 +1,6 @@
-import "./DiaryItem.css";
+import "../styles/DiaryItem.css";
 import { useNavigate } from "react-router-dom";
-import { getEmotionImage } from "../util/get-emotion-image.js";
+import { getEmotionImage } from "../utils/get-emotion-image.js";
 import Button from "./Button.jsx";
 
 export default ({ id, emotionId, createdDate, content }) => {

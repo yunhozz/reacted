@@ -1,4 +1,4 @@
-import "./Header.css";
+import "../styles/Header.css";
 
 export default ({ title, leftChild, rightChild }) => {
     return (

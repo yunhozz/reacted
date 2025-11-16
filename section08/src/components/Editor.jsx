@@ -1,7 +1,7 @@
-import "./Editor.css";
+import "../styles/Editor.css";
 import { useEffect, useState } from "react";
-import { emotionList } from "../util/constants.js";
-import { getStringDate } from "../util/get-string-date.js";
+import { emotionList } from "../utils/constants.js";
+import { getStringDate } from "../utils/get-string-date.js";
 import Button from "./Button.jsx";
 import EmotionItem from "./EmotionItem.jsx";
 

@@ -1,6 +1,6 @@
-import "./Viewer.css";
-import { emotionList } from "../util/constants.js";
-import { getEmotionImage } from "../util/get-emotion-image.js";
+import "../styles/Viewer.css";
+import { emotionList } from "../utils/constants.js";
+import { getEmotionImage } from "../utils/get-emotion-image.js";
 
 export default ({ emotionId, content }) => {
     const emotion = emotionList.find(emotion => String(emotion.emotionId) === String(emotionId));

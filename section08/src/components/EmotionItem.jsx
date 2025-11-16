@@ -1,5 +1,5 @@
-import "./EmotionItem.css";
-import { getEmotionImage } from "../util/get-emotion-image.js";
+import "../styles/EmotionItem.css";
+import { getEmotionImage } from "../utils/get-emotion-image.js";
 
 export default ({ emotionId, emotionName, isSelected, onClick }) => {
     return (
